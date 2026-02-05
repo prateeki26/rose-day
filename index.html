@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Day Special Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose-red: #b30000;
+            --petal-pink: #ff85a2;
+            --cream: #fffaf0;
+            --gold: #c5a059;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream);
+            color: var(--rose-red);
+            overflow: hidden; /* Important for games */
+        }
+
+        /* --- POPUP OVERLAY --- */
+        #initial-popup {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 5000; transition: opacity 0.5s ease;
+        }
+        .popup-content {
+            background: white; padding: 40px; border-radius: 20px;
+            text-align: center; border: 3px solid var(--rose-red);
+            box-shadow: 0 0 30px var(--petal-pink);
+            width: 80%;
+        }
+        .popup-content h1 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; margin-bottom: 20px; }
+
+        /* --- MAIN PAGE --- */
+        .main-page {
+            display: none;
+            background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+                        url('https://tse4.mm.bing.net/th/id/OIP.oW2GNCKIinQ5CsVH1XEFxwHaEK?w=1157&h=651&rs=1&pid=ImgDetMain&o=7&rm=3');
+            background-size: cover;
+            min-height: 100vh; padding: 20px; box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .header { text-align: center; padding: 40px 0; }
+        .header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin: 0; }
+
+        /* --- BUTTON GRID --- */
+        .menu-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            max-width: 500px; margin: 20px auto;
+        }
+        .opt-btn {
+            aspect-ratio: 1/1; border: none; border-radius: 15px;
+            font-family: 'Dancing Script', cursive; font-size: 1.3rem;
+            color: white; cursor: pointer; transition: transform 0.3s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn-game1 { background: #e63946; }
+        .btn-game2 { background: #ff7096; }
+        .btn-card1 { background: #9d0208; }
+        .btn-card2 { background: #fb6f92; }
+        .btn-icon { font-size: 2.2rem; margin-bottom: 5px; }
+
+        /* --- SECTIONS --- */
+        .content-section {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--cream); z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box;
+        }
+        .active-section { display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.5s; }
+
+        /* --- MOBILE IMAGES --- */
+        .card-img, .reward-img {
+            width: 100%;
+            max-width: 280px;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 4px solid var(--gold);
+            margin-bottom: 15px;
+        }
+
+        /* --- REWARD MODAL --- */
+        #reward-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 6000;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
+        }
+
+        .back-btn {
+            margin-top: 15px; padding: 12px 35px; border-radius: 30px;
+            background: var(--rose-red); color: white; border: none; cursor: pointer;
+            font-weight: bold;
+        }
+
+        .music-toggle {
+            position: fixed; bottom: 20px; right: 20px; z-index: 3000;
+            background: white; border: 2px solid var(--rose-red);
+            border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="initial-popup">
+        <div class="popup-content">
+            <h1>🌹 Rose Day Special</h1>
+            <p>A digital garden grown just for you.</p>
+            <button class="back-btn" style="background: var(--rose-red);" onclick="enterSite()">Enter My Heart</button>
+        </div>
+    </div>
+
+    <audio id="bgm" loop>
+        <source src="ytmp3free.cc_happy-rose-daylove-valentinesday-roseday-arrahman-bgm-youtubemp3free.org.mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-toggle" onclick="toggleMusic()" id="mBtn">🎵</button>
+
+    <div class="main-page" id="mainPage">
+        <div class="header">
+            <h2>Happy Rose Day</h2>
+            <p>Pick a flower from my garden...</p>
+        </div>
+
+        <div class="menu-grid">
+            <button class="opt-btn btn-game1" onclick="openSection('g1')">
+                <span class="btn-icon">🎮</span>Petal Rain
+            </button>
+            <button class="opt-btn btn-game2" onclick="openSection('g2')">
+                <span class="btn-icon">🧩</span>Memory Game
+            </button>
+            <button class="opt-btn btn-card1" onclick="openSection('c1')">
+                <span class="btn-icon">💌</span>Classic Red
+            </button>
+            <button class="opt-btn btn-card2" onclick="openSection('c2')">
+                <span class="btn-icon">🌸</span>Soft Blush
+            </button>
+        </div>
+    </div>
+
+    <div id="reward-modal">
+        <img id="reward-img" src="" class="reward-img">
+        <h2 id="reward-title" style="font-family: 'Dancing Script'; font-size: 2.2rem; margin: 10px 0;"></h2>
+        <p id="reward-quote" style="font-style: italic; padding: 0 20px;"></p>
+        <button class="back-btn" onclick="closeReward()">Back to Garden</button>
+    </div>
+
+    <div id="g1" class="content-section">
+        <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem;">Petal Rain</h2>
+        <p>Catch 10 falling petals!</p>
+        <div id="game-canvas" style="position: relative; width: 300px; height: 400px; background: white; border: 2px solid var(--petal-pink); overflow: hidden;"></div>
+        <h3 id="g1-score">Score: 0</h3>
+        <button class="back-btn" onclick="closeSections()">Back</button>
+    </div>
+
+    <div id="g2" class="content-section">
+        <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem;">Memory Rose</h2>
+        <div id="memory-board" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 300px;"></div>
+        <button class="back-btn" onclick="closeSections()">Back</button>
+    </div>
+
+    <div id="c1" class="content-section">
+        <img src="https://tse4.mm.bing.net/th/id/OIP.tkHvx1BfrzPo-HeDPf53eQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" class="card-img">
+        <p style="font-family: 'Playfair Display'; font-style: italic; text-align: center; padding: 0 20px;">
+            "A single rose can be my garden... a single friend, my world. Happy Rose Day to the one who makes everything beautiful."
+        </p>
+        <button class="back-btn" onclick="closeSections()">Back</button>
+    </div>
+
+    <div id="c2" class="content-section">
+        <img src="https://asset.bloomnation.com/c_pad,d_vendor:global:catalog:product:image.png,f_auto,fl_preserve_transparency,q_auto/v1683511043/vendor/8739/catalog/product/2/0/20230506113102_file_6456e336cd81f_6456e462b8999_6457f1bda8337.jpeg" class="card-img">
+        <p style="font-family: 'Playfair Display'; font-style: italic; text-align: center; padding: 0 20px;">
+            "Like a rose, your love adds color and fragrance to my life. I'm sending you this digital bouquet until I can hold you again."
+        </p>
+        <button class="back-btn" onclick="closeSections()">Back</button>
+    </div>
+
+    <script>
+        const bgm = document.getElementById('bgm');
+        let musicOn = false;
+
+        function toggleMusic() {
+            if(!musicOn) { bgm.play(); document.getElementById('mBtn').innerText = '🔊'; }
+            else { bgm.pause(); document.getElementById('mBtn').innerText = '🔇'; }
+            musicOn = !musicOn;
+        }
+
+        function enterSite() {
+            document.getElementById('initial-popup').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+            if(!musicOn) toggleMusic();
+        }
+
+        function openSection(id) {
+            closeSections();
+            document.getElementById(id).classList.add('active-section');
+            if(id === 'g1') initG1();
+            if(id === 'g2') initG2();
+        }
+
+        function closeSections() {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+        }
+
+        function triggerWin(type) {
+            const modal = document.getElementById('reward-modal');
+            const img = document.getElementById('reward-img');
+            const title = document.getElementById('reward-title');
+            const quote = document.getElementById('reward-quote');
+
+            if(type === 'memory') {
+                img.src = "https://confettiandroses.com/wp-content/uploads/2024/06/Garden-Fresh-Pink-Tulips-768x1152.jpeg";
+                title.innerText = "A Special Tulip Bouquet";
+                quote.innerText = "You are the most special person I know. Just like these tulips, you stand out with grace. 🌷";
+            } else {
+                img.src = "https://bestwishesfor.com/wp-content/uploads/2023/01/Happy-Rose-Day-Gif.gif";
+                title.innerText = "It's For You, My Dear";
+                quote.innerText = "You caught the petals, just like you caught my heart! Happy Rose Day! 🌹";
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeReward() {
+            document.getElementById('reward-modal').style.display = 'none';
+            closeSections();
+        }
+
+        // --- Game 1: Petal Catcher ---
+        function initG1() {
+            const container = document.getElementById('game-canvas');
+            container.innerHTML = '';
+            let score = 0;
+            const scoreDisplay = document.getElementById('g1-score');
+            
+            const timer = setInterval(() => {
+                if(!document.getElementById('g1').classList.contains('active-section')) { clearInterval(timer); return; }
+                const petal = document.createElement('div');
+                petal.innerHTML = '🌸';
+                petal.style.position = 'absolute';
+                petal.style.left = Math.random() * 90 + '%';
+                petal.style.top = '-40px';
+                petal.style.fontSize = '2rem';
+                petal.style.cursor = 'pointer';
+                petal.style.transition = 'top 3s linear';
+                container.appendChild(petal);
+
+                setTimeout(() => petal.style.top = '400px', 50);
+                petal.onclick = () => {
+                    score++;
+                    scoreDisplay.innerText = "Score: " + score;
+                    petal.remove();
+                    if(score === 10) { clearInterval(timer); triggerWin('catch'); }
+                };
+            }, 800);
+        }
+
+        // --- Game 2: Memory ---
+        function initG2() {
+            const board = document.getElementById('memory-board');
+            board.innerHTML = '';
+            const items = ['🌹','🌹','🌻','🌻','🌷','🌷','🌼','🌼','🌺','🌺','🌸','🌸'].sort(() => 0.5 - Math.random());
+            let flipped = [];
+            let matches = 0;
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.style = "height: 75px; background: var(--petal-pink); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border-radius: 10px; cursor: pointer; color: transparent;";
+                card.innerText = item;
+                card.onclick = () => {
+                    if(flipped.length < 2 && card.style.color === 'transparent') {
+                        card.style.color = 'white';
+                        flipped.push(card);
+                        if(flipped.length === 2) {
+                            if(flipped[0].innerText === flipped[1].innerText) { 
+                                matches++; flipped = []; 
+                                if(matches === 6) triggerWin('memory');
+                            } else {
+                                setTimeout(() => { flipped.forEach(c => c.style.color = 'transparent'); flipped = []; }, 600);
+                            }
+                        }
+                    }
+                };
+                board.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
